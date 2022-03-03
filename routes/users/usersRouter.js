@@ -1,0 +1,38 @@
+var express = require("express");
+var router = express.Router();
+const {
+  createUser,
+  login,
+  updateUser,
+} = require("./controller/userController");
+
+const {
+  checkIsEmpty,
+  checkIsUndefined,
+  validateCreateData,
+  validateLoginData,
+  jwtMiddleware,
+  validateUpdateData,
+} = require("./lib/authMiddleware");
+
+/* GET users listing. */
+
+router.post(
+  "/create-user",
+  checkIsUndefined,
+  checkIsEmpty,
+  validateCreateData,
+  createUser
+);
+router.post("/login", checkIsUndefined, checkIsEmpty, validateLoginData, login);
+
+router.put(
+  "/profile",
+  jwtMiddleware,
+  checkIsUndefined,
+  checkIsEmpty,
+  validateUpdateData,
+  updateUser
+);
+
+module.exports = router;
